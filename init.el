@@ -1,25 +1,34 @@
- ;;el-get
- (add-to-list 'load-path "~/.emacs.d/el-get/el-get")
- (unless (require 'el-get nil 'noerror)
-   (with-current-buffer
-       (url-retrieve-synchronously
-	"https://raw.github.com/dimitri/el-get/master/el-get-install.el")
-     (let (el-get-master-branch)
-       (goto-char (point-max))
-       (eval-print-last-sexp))))
+;;el-get
+(add-to-list 'load-path "~/.emacs.d/el-get/el-get")
+(unless (require 'el-get nil 'noerror)
+  (with-current-buffer
+      (url-retrieve-synchronously
+       "https://raw.github.com/dimitri/el-get/master/el-get-install.el")
+    (let (el-get-master-branch)
+      (goto-char (point-max))
+      (eval-print-last-sexp))))
 
- (el-get 'sync)
- ;;color theme for emacs higher than 24
- (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
- ;; enable copy & paste from/in emacs
- (setq x-select-enable-clipboard t)
- (setq interprogram-paste-function 'x-cut-buffer-or-selection-value)
+(el-get 'sync)
+;;color theme for emacs higher than 24
+(add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
+;; enable copy & paste from/in emacs
+(defun mac-copy ()
+  (shell-command-to-string "pbpaste"))
+
+(defun mac-paste (text &optional push)
+  (let ((process-connection-type nil))
+    (let ((proc (start-process "pbcopy" "*Messages*" "pbcopy")))
+      (process-send-string proc text)
+      (process-send-eof proc))))
+
+(setq interprogram-cut-function 'mac-paste)
+(setq interprogram-paste-function 'mac-copy)
 ;;w3m
 (require 'w3m)
 (require 'w3m-lnum)
-(require 'util)
+;;(require 'util)
+(add-hook 'w3m-mode-hook 'w3m-lnum-mode)
 (setq w3m-default-display-inline-images t)
-(setq w3m-key-binding 'info)
 ;;
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
