@@ -4,9 +4,8 @@
   (with-current-buffer
       (url-retrieve-synchronously
        "https://raw.github.com/dimitri/el-get/master/el-get-install.el")
-    (let (el-get-master-branch)
       (goto-char (point-max))
-      (eval-print-last-sexp))))
+      (eval-print-last-sexp)))
 
 (el-get 'sync)
 ;;color theme for emacs higher than 24
@@ -29,6 +28,24 @@
 ;;(require 'util)
 (add-hook 'w3m-mode-hook 'w3m-lnum-mode)
 (setq w3m-default-display-inline-images t)
+;;yasnippet
+(add-to-list 'load-path
+              "~/.emacs.d/plugins/yasnippet")
+(require 'yasnippet)
+(yas-global-mode 1)
+;;
+;; auto-complete
+(require 'auto-complete)
+(require 'auto-complete-config)
+
+(setq-default ac-sources '(ac-source-yasnippet ac-source-abbrev ac-source-dictionary ac-source-words-in-same-mode-buffers))
+(add-hook 'emacs-lisp-mode-hook 'ac-emacs-lisp-mode-setup)
+(add-hook 'c-mode-common-hook 'ac-cc-mode-setup)
+(add-hook 'ruby-mode-hook 'ac-ruby-mode-setup)
+(add-hook 'css-mode-hook 'ac-css-mode-setup)
+(add-hook 'auto-complete-mode-hook 'ac-common-setup)
+(global-auto-complete-mode t)
+(add-to-list 'ac-modes 'objc-mode)
 ;;
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
